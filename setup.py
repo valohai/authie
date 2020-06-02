@@ -7,6 +7,9 @@ import setuptools
 with open(os.path.join(os.path.dirname(__file__), 'authie', '__init__.py')) as infp:
     version = ast.literal_eval(re.search('__version__ = (.+?)$', infp.read(), re.M).group(1))
 
+with open('README.md', 'r') as fp:
+    long_description = fp.read()
+
 dev_dependencies = [
     'flake8',
     'isort',
@@ -20,6 +23,8 @@ if __name__ == '__main__':
     setuptools.setup(
         name='authie',
         description='Authentication Toolkit for Python',
+        long_description=long_description,
+        long_description_content_type='text/markdown',
         version=version,
         author='Valohai',
         author_email='hait@valohai.com',
