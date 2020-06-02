@@ -1,5 +1,7 @@
 # authie — Authentication Toolkit for Python
 
+[![Build Status](https://travis-ci.com/valohai/authie.svg?branch=master)](https://travis-ci.com/valohai/authie)
+
 `authie` is a set of authentication-related Python snippets used at [Valohai](https://valohai.com/).
 
 ## Development
