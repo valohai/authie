@@ -3,8 +3,8 @@ from unittest.mock import patch
 
 import pytest
 
-from authie.docker.credential_manager import get_credential_manager
-from authie.docker.credential_manager.errors import DockerLoginFailed
+from laituri.docker.credential_manager import get_credential_manager
+from laituri.docker.credential_manager.errors import DockerLoginFailed
 
 from .mock_process import create_mock_popen, create_mock_process
 

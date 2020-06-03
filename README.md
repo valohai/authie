@@ -1,28 +1,28 @@
-# authie — Authentication Toolkit for Python
+# laituri — Docker Toolkit for Python
 
-[![Build Status](https://travis-ci.com/valohai/authie.svg?branch=master)](https://travis-ci.com/valohai/authie)
-[![codecov](https://codecov.io/gh/valohai/authie/branch/master/graph/badge.svg)](https://codecov.io/gh/valohai/authie)
+[![Build Status](https://travis-ci.com/valohai/laituri.svg?branch=master)](https://travis-ci.com/valohai/laituri)
+[![codecov](https://codecov.io/gh/valohai/laituri/branch/master/graph/badge.svg)](https://codecov.io/gh/valohai/laituri)
 
-`authie` is a set of authentication-related Python snippets used at [Valohai](https://valohai.com/).
+`laituri` is a set of Docker-related Python snippets used at [Valohai](https://valohai.com/).
 
 ## Development
 
 Installing editable library version in the current virtual environment.
 
 ```bash
-pip install -e .[dev]   # optionally replace . with the path to authie source root
-pytest --cov            # run unit tests and print test coverage
+pip install -e .[dev]   # optionally replace . with the path to laituri source root
+isort -y                # automatically enforce import style rules
 flake8                  # run code style checker
 pydocstyle              # run documentation style checker
-isort -y                # automatically enforce import style rules
+pytest --cov            # run unit tests and print test coverage
 
 python
->>> import authie; print(authie.__version__)
+>>> import laituri; print(laituri.__version__)
 ```
 
 ## Making a Release
 
-Pump the version number accordingly in `authie/__init__.py` and then...
+Pump the version number accordingly in `laituri/__init__.py` and then...
 
 ```bash
 # `pip install twine` if you don't have it (PyPI project uploader)
