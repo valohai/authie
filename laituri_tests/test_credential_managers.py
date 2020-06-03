@@ -113,3 +113,27 @@ def test_fallback_with_invalid_credential_configuration(mocker, missing_value):
 
     my_action.assert_called_once_with()
     assert 'Unable to parse' in my_logging_callback.call_args[0][0]
+
+
+def test_changing_settings(mocker):
+    my_action = mocker.Mock()
+
+    # accept all subprocess calls that use the default 'docker' command
+    mocker.patch(
+        'subprocess.Popen',
+        wraps=lambda args, **kwargs: create_mock_process() if args[1] == 'docker' else None,
+    )
+    with get_credential_manager(image=example_images[0], registry_credentials=example_credentials):
+        my_action()
+    my_action.call_count = 1
+
+    # modify the settings and accept only subprocess calls that use the modified command
+    custom_command = 'modified-docker'
+    mocker.patch('laituri.settings.DOCKER_COMMAND', custom_command)
+    mocker.patch(
+        'subprocess.Popen',
+        wraps=lambda args, **kwargs: create_mock_process() if args[1] == custom_command else None
+    )
+    with get_credential_manager(image=example_images[0], registry_credentials=example_credentials):
+        my_action()
+    my_action.call_count = 2

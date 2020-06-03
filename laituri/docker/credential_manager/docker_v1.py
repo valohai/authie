@@ -3,9 +3,9 @@ import subprocess
 from contextlib import contextmanager
 from typing import Callable, Dict
 
-from .errors import DockerLoginFailed
+from laituri import settings
 
-DOCKER_COMMAND_TIMEOUT = 30
+from .errors import DockerLoginFailed
 
 log = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ def docker_login(domain: str, username: str, password: str) -> bool:
     """Use Docker command-line client to login to the specified image registry."""
     args = [
         '/usr/bin/env',
-        'docker',
+        settings.DOCKER_COMMAND,
         'login',
         '--username', username,
         '--password-stdin',
@@ -24,7 +24,7 @@ def docker_login(domain: str, username: str, password: str) -> bool:
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         cmd_input = (password + '\n').encode('utf-8')
-        stdout, _ = proc.communicate(input=cmd_input, timeout=DOCKER_COMMAND_TIMEOUT)
+        stdout, _ = proc.communicate(input=cmd_input, timeout=settings.DOCKER_TIMEOUT)
     except subprocess.TimeoutExpired as te:
         raise DockerLoginFailed('timed out') from te
     if proc.returncode != 0:
@@ -42,10 +42,10 @@ def docker_logout(domain: str) -> None:
         log.info('Running `docker logout %s`' % domain)
         subprocess.check_call([
             '/usr/bin/env',
-            'docker',
+            settings.DOCKER_COMMAND,
             'logout',
             domain,
-        ], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, timeout=DOCKER_COMMAND_TIMEOUT)
+        ], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, timeout=settings.DOCKER_TIMEOUT)
     except subprocess.CalledProcessError as cpe:
         message = cpe.stdout.decode('utf-8', errors='ignore')
         log.warning('Failed `docker logout %s`: %s' % (domain, message))
