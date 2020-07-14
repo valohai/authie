@@ -115,6 +115,7 @@ def test_fallback_with_invalid_credential_configuration(mocker, missing_value):
     assert 'Unable to parse' in my_logging_callback.call_args[0][0]
 
 
+@patch.dict(example_credentials)
 def test_changing_settings(mocker):
     my_action = mocker.Mock()
 
