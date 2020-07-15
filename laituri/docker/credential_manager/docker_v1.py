@@ -4,14 +4,35 @@ from contextlib import contextmanager
 from typing import Callable, Dict
 
 from laituri import settings
-
 from .errors import DockerLoginFailed
 
 log = logging.getLogger(__name__)
 
 
+@contextmanager
+def docker_v1_credential_manager(
+    *,
+    image: str,
+    registry_credentials: Dict,
+    log_status: Callable
+):
+    domain = image.split('/')[0]
+    try:
+        docker_login(
+            domain=str(domain),
+            username=str(registry_credentials['username']),
+            password=str(registry_credentials['password']),
+        )
+    except DockerLoginFailed as dlf:
+        raise DockerLoginFailed('Failed Docker login to %s: %s' % (domain, str(dlf))) from dlf
+    yield
+    docker_logout(domain)
+
+
 def docker_login(domain: str, username: str, password: str) -> bool:
-    """Use Docker command-line client to login to the specified image registry."""
+    """
+    Use Docker command-line client to login to the specified image registry.
+    """
     args = [
         '/usr/bin/env',
         settings.DOCKER_COMMAND,
@@ -33,8 +54,10 @@ def docker_login(domain: str, username: str, password: str) -> bool:
 
 
 def docker_logout(domain: str) -> None:
-    """Use Docker command-line client to logout from the specified image registry."""
-    # Hack: when logging out of "docker.io" they actually mean "https://index.docker.io/v1/"...
+    """
+    Use Docker command-line client to logout from the specified image registry.
+    """
+    # when logging out of "docker.io" they actually mean "https://index.docker.io/v1/"
     if domain == 'docker.io':
         domain = 'https://index.docker.io/v1/'
 
@@ -49,26 +72,3 @@ def docker_logout(domain: str) -> None:
     except subprocess.CalledProcessError as cpe:
         message = cpe.stdout.decode('utf-8', errors='ignore')
         log.warning('Failed `docker logout %s`: %s' % (domain, message))
-
-
-@contextmanager
-def docker_v1_credential_manager(
-    *,
-    image: str,
-    registry_credentials: Dict,
-    log_status: Callable
-):
-    """Credential context manager that tries to log you in before the context and logs out out on exit."""
-    domain = image.split('/')[0]
-    try:
-        docker_login(
-            domain=domain,
-            username=str(registry_credentials['username']),
-            password=str(registry_credentials['password']),
-        )
-    except DockerLoginFailed as dlf:
-        raise DockerLoginFailed('Failed Docker login to %s: %s' % (domain, str(dlf))) from dlf
-
-    yield  # do your thing
-
-    docker_logout(domain)
