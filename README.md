@@ -33,6 +33,6 @@ twine upload dist/*
 
 # and update git remote
 git add .
-git commit -m "Pump to v0.2"
+git commit -m "Pump to v0.1.0"
 git push
 ```
