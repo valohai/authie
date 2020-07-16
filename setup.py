@@ -17,6 +17,7 @@ dev_dependencies = [
     'pytest',
     'pytest-cov',
     'pytest-mock',
+    'requests-mock',
 ]
 
 if __name__ == '__main__':
@@ -33,7 +34,7 @@ if __name__ == '__main__':
         url='https://github.com/valohai/laituri',
         license='MIT',
         packages=setuptools.find_packages('.', exclude=('laituri_tests', 'laituri_tests.*',)),
-        install_requires=[],
+        install_requires=['requests'],
         tests_require=dev_dependencies,
         extras_require={'dev': dev_dependencies},
         classifiers=[

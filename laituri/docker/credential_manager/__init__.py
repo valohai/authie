@@ -34,9 +34,9 @@ def get_credential_manager(
     if not isinstance(registry_credentials, dict):  # no credentials to manage
         return dummy_credential_manager(**manager_kwargs)
 
-    type = registry_credentials.get('type')
+    credentials_type = registry_credentials.get('type')
     version = registry_credentials.get('version')
-    manager = credential_managers.get((type, version))
+    manager = credential_managers.get((credentials_type, str(version)))
     if manager:
         return manager(**manager_kwargs)
 
