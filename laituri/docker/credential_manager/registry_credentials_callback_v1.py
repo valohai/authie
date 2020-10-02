@@ -1,9 +1,10 @@
 from contextlib import contextmanager
-from typing import Dict, Callable
+from typing import Callable, Dict
 
 import requests
 
 from laituri.utils.retry import retry
+
 from .docker_v1 import docker_v1_credential_manager
 
 

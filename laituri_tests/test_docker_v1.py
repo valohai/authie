@@ -5,8 +5,8 @@ import pytest
 
 from laituri.docker.credential_manager import get_credential_manager
 from laituri.docker.credential_manager.errors import DockerLoginFailed
-from laituri_tests.mock_process import create_mock_popen, create_mock_process
 from laituri_tests.mock_data import EXAMPLE_IMAGES
+from laituri_tests.mock_process import create_mock_popen, create_mock_process
 
 VALID_DOCKER_CREDENTIALS = {
     'type': 'docker',

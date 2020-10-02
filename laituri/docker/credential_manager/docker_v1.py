@@ -4,6 +4,7 @@ from contextlib import contextmanager
 from typing import Callable, Dict
 
 from laituri import settings
+
 from .errors import DockerLoginFailed
 
 log = logging.getLogger(__name__)
