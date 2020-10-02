@@ -1,11 +1,12 @@
-import pytest
 from unittest.mock import patch
 
+import pytest
 import requests
 
 from laituri.docker.credential_manager import get_credential_manager
 from laituri_tests.mock_data import EXAMPLE_IMAGES
 from laituri_tests.mock_process import create_mock_popen
+
 from .test_docker_v1 import VALID_DOCKER_CREDENTIALS
 
 VALID_CALLBACK_CREDENTIALS = {
