@@ -6,6 +6,7 @@
 .pytest_cache
 .tox
 .venv
+venv
 .idea/
 build/
 dist/
