@@ -22,6 +22,7 @@ if __name__ == '__main__':
         maintainer='Ruksi Laine',
         maintainer_email='me@ruk.si',
         url='https://github.com/valohai/laituri',
+        include_package_data=True,
         license='MIT',
         packages=setuptools.find_packages('.', exclude=('laituri_tests', 'laituri_tests.*',)),
         install_requires=['requests>=2.23,<3'],
