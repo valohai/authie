@@ -1,7 +1,6 @@
 # laituri — Docker Toolkit for Python
 
-[![Build Status](https://travis-ci.com/valohai/laituri.svg?branch=master)](https://travis-ci.com/valohai/laituri)
-[![codecov](https://codecov.io/gh/valohai/laituri/branch/master/graph/badge.svg)](https://codecov.io/gh/valohai/laituri)
+[![CI](https://github.com/valohai/laituri/actions/workflows/ci.yml/badge.svg)](https://github.com/valohai/laituri/actions/workflows/ci.yml)[![codecov](https://codecov.io/gh/valohai/laituri/branch/master/graph/badge.svg)](https://codecov.io/gh/valohai/laituri)
 
 `laituri` is a set of Docker-related Python snippets used at [Valohai](https://valohai.com/). You can use it with python>=3.5.
 

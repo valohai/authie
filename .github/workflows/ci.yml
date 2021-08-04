@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: '${{ matrix.python-version }}'
       - uses: actions/checkout@v2
-      - run: 'pip install -e .[dev]'
+      - run: 'pip install -e . -r requirements-dev.txt'
       - run: pytest -vvv --cov .
       - run: 'bash <(curl -s https://codecov.io/bash)'
   Lint:
@@ -32,5 +32,6 @@ jobs:
         with:
           python-version: 3.9
       - uses: actions/checkout@v2
-      - run: 'pip install -e .[dev]'
+      - run: 'pip install -e . -r requirements-lint.txt'
       - run: flake8
+      - run: mypy laituri

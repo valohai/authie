@@ -1,0 +1,6 @@
+pytest<6.0  # todo: upgrade when no longer py3.5
+packaging<20.0  # todo: upgrade when no longer py3.5
+pytest-cov
+pytest-mock<3.6.0  # todo: upgrade when no longer py3.5
+requests-mock
+requests<2.26.0

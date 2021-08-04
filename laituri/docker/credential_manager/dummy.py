@@ -15,3 +15,10 @@ def dummy_credential_manager(
     This can used when no credentials are included.
     """
     yield
+
+
+def get_dummy_credential_manager():
+    """
+    Construct a dummy credential manager without having to think about arguments.
+    """
+    return dummy_credential_manager(image="", registry_credentials=None, log_status=lambda s: None)
