@@ -25,7 +25,7 @@ def docker_v1_credential_manager(
             password=str(registry_credentials['password']),
         )
     except DockerLoginFailed as dlf:
-        raise DockerLoginFailed('Failed Docker login to %s: %s' % (domain, str(dlf))) from dlf
+        raise DockerLoginFailed(f'Failed Docker login to {domain}: {str(dlf)}') from dlf
     yield
     docker_logout(domain)
 
@@ -42,7 +42,7 @@ def docker_login(domain: str, username: str, password: str) -> bool:
         '--password-stdin',
         domain,
     ]
-    log.info('Running `%s`' % ' '.join(args))
+    log.info(f"Running `{' '.join(args)}`")
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         cmd_input = (password + '\n').encode('utf-8')
@@ -63,7 +63,7 @@ def docker_logout(domain: str) -> None:
         domain = 'https://index.docker.io/v1/'
 
     try:
-        log.info('Running `docker logout %s`' % domain)
+        log.info(f'Running `docker logout {domain}`')
         subprocess.check_call([
             '/usr/bin/env',
             settings.DOCKER_COMMAND,
@@ -72,4 +72,4 @@ def docker_logout(domain: str) -> None:
         ], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, timeout=settings.DOCKER_TIMEOUT)
     except subprocess.CalledProcessError as cpe:
         message = cpe.stdout.decode('utf-8', errors='ignore')
-        log.warning('Failed `docker logout %s`: %s' % (domain, message))
+        log.warning(f'Failed `docker logout {domain}`: {message}')

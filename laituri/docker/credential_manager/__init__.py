@@ -39,5 +39,5 @@ def get_credential_manager(
             log_status=log_status,
         )
 
-    log_status('Unable to parse %s version %s registry credentials; upcoming action may fail.' % (type, version))
+    log_status(f'Unable to parse {type} version {version} registry credentials; upcoming action may fail.')
     return get_dummy_credential_manager()

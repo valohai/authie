@@ -7,7 +7,7 @@ import setuptools
 with open(os.path.join(os.path.dirname(__file__), 'laituri', '__init__.py')) as infp:
     version = ast.literal_eval(re.search('__version__ = (.+?)$', infp.read(), re.M).group(1))
 
-with open('README.md', 'r') as fp:
+with open('README.md') as fp:
     long_description = fp.read()
 
 if __name__ == '__main__':
@@ -24,6 +24,7 @@ if __name__ == '__main__':
         url='https://github.com/valohai/laituri',
         include_package_data=True,
         license='MIT',
+        python_requires='>=3.6',
         packages=setuptools.find_packages('.', exclude=('laituri_tests', 'laituri_tests.*',)),
         install_requires=['requests>=2.23,<3'],
         classifiers=[

@@ -10,30 +10,28 @@ certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
-coverage==5.5
+coverage[toml]==6.0.1
     # via pytest-cov
 idna==2.10
     # via requests
-more-itertools==8.8.0
+iniconfig==1.1.1
     # via pytest
-packaging==19.2
-    # via
-    #   -r requirements-dev.in
-    #   pytest
-pluggy==0.13.1
+packaging==21.0
+    # via pytest
+pluggy==1.0.0
     # via pytest
 py==1.10.0
     # via pytest
 pyparsing==2.4.7
     # via packaging
-pytest==5.4.3
+pytest==6.2.5
     # via
     #   -r requirements-dev.in
     #   pytest-cov
     #   pytest-mock
-pytest-cov==2.12.1
+pytest-cov==3.0.0
     # via -r requirements-dev.in
-pytest-mock==3.5.1
+pytest-mock==3.6.1
     # via -r requirements-dev.in
 requests==2.25.1
     # via
@@ -42,12 +40,10 @@ requests==2.25.1
 requests-mock==1.9.3
     # via -r requirements-dev.in
 six==1.16.0
-    # via
-    #   packaging
-    #   requests-mock
+    # via requests-mock
 toml==0.10.2
-    # via pytest-cov
-urllib3==1.26.6
-    # via requests
-wcwidth==0.2.5
     # via pytest
+tomli==1.2.1
+    # via coverage
+urllib3==1.26.7
+    # via requests
