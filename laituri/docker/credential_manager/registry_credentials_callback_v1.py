@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Callable, Dict
+from typing import Any, Callable, Dict
 
 import requests
 from requests.utils import default_headers
@@ -16,15 +16,24 @@ def registry_credentials_callback_v1_credential_manager(
     registry_credentials: Dict,
     log_status: Callable
 ):
-    docker_credentials = fetch_docker_credentials(registry_credentials['url'])
+    docker_credentials = fetch_docker_credentials(registry_credentials)
     with docker_v1_credential_manager(image=image, registry_credentials=docker_credentials, log_status=log_status):
         yield
 
 
 @retry()
-def fetch_docker_credentials(url: str) -> Dict:
+def fetch_docker_credentials(request_info: Dict[str, Any]) -> Dict:
     headers = default_headers()
     headers['User-Agent'] = f'{headers.get("User-Agent")} laituri/{laituri.__version__}'
-    response = requests.post(url, timeout=15, headers=headers)
+    ri_headers = request_info.get('headers')
+    if isinstance(ri_headers, dict):
+        headers.update({key: str(value) for (key, value) in ri_headers.items() if key and value})
+
+    response = requests.request(
+        method=request_info.get('method', 'POST'),
+        url=request_info['url'],
+        headers=headers,
+        timeout=15,
+    )
     response.raise_for_status()
     return response.json()
