@@ -20,7 +20,7 @@ VALID_CALLBACK_RESPONSE = VALID_DOCKER_CREDENTIALS
 @patch.dict(VALID_CALLBACK_CREDENTIALS)
 @pytest.mark.parametrize('image', EXAMPLE_IMAGES)
 def test_callback_retry(mocker, requests_mock, image: str):
-    requests_mock.post(
+    rh = requests_mock.post(
         VALID_CALLBACK_CREDENTIALS['url'],
         [
             {'status_code': 404},
@@ -37,3 +37,5 @@ def test_callback_retry(mocker, requests_mock, image: str):
         my_action()
     assert mock_popen.call_count == 2  # login + logout
     my_action.assert_called_once_with()
+    headers = rh.request_history[-1].headers
+    assert 'laituri/' in headers['user-agent']

@@ -2,10 +2,11 @@ from contextlib import contextmanager
 from typing import Callable, Dict
 
 import requests
+from requests.utils import default_headers
 
+import laituri
+from laituri.docker.credential_manager.docker_v1 import docker_v1_credential_manager
 from laituri.utils.retry import retry
-
-from .docker_v1 import docker_v1_credential_manager
 
 
 @contextmanager
@@ -22,6 +23,8 @@ def registry_credentials_callback_v1_credential_manager(
 
 @retry()
 def fetch_docker_credentials(url: str) -> Dict:
-    response = requests.post(url, timeout=15)
+    headers = default_headers()
+    headers['User-Agent'] = f'{headers.get("User-Agent")} laituri/{laituri.__version__}'
+    response = requests.post(url, timeout=15, headers=headers)
     response.raise_for_status()
     return response.json()
