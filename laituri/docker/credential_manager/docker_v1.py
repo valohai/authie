@@ -51,7 +51,7 @@ def docker_login(domain: str, username: str, password: str) -> bool:
         '--password-stdin',
         domain,
     ]
-    log.info(f"Running `{' '.join(args)}`")
+    log.debug(f"Running `{' '.join(args)}`")
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         cmd_input = (password + '\n').encode('utf-8')
@@ -72,7 +72,7 @@ def docker_logout(domain: str) -> None:
         domain = 'https://index.docker.io/v1/'
 
     try:
-        log.info(f'Running `docker logout {domain}`')
+        log.debug(f'Running `docker logout {domain}`')
         subprocess.check_call([
             get_docker_command(),
             'logout',
