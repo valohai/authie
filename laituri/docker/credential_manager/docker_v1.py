@@ -26,8 +26,10 @@ def docker_v1_credential_manager(
         )
     except DockerLoginFailed as dlf:
         raise DockerLoginFailed(f'Failed Docker login to {domain}: {str(dlf)}') from dlf
-    yield
-    docker_logout(domain)
+    try:
+        yield
+    finally:
+        docker_logout(domain)
 
 
 def docker_login(domain: str, username: str, password: str) -> bool:
