@@ -7,9 +7,9 @@ def create_mock_popen():
 
     def popen_mock(args, **kwargs):
         # make all known call types automatically succeed
-        if args[1] == 'docker' and (args[2] == 'login' or args[2] == 'logout'):
+        if args[0].endswith('docker') and args[1] in ('login', 'logout'):
             return create_mock_process()
-        raise NotImplementedError('not sure how to mock this process')
+        raise NotImplementedError(f'not sure how to mock this process: {args}')
 
     mock = Mock(wraps=popen_mock)
     return mock
