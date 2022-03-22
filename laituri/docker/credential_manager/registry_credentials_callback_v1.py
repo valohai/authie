@@ -6,6 +6,7 @@ from requests.utils import default_headers
 
 import laituri
 from laituri.docker.credential_manager.docker_v1 import docker_v1_credential_manager
+from laituri.docker.credential_manager.errors import CallbackFailed
 from laituri.utils.retry import retry
 
 
@@ -16,7 +17,11 @@ def registry_credentials_callback_v1_credential_manager(
     registry_credentials: Dict,
     log_status: Callable
 ):
-    docker_credentials = fetch_docker_credentials(registry_credentials)
+    try:
+        docker_credentials = fetch_docker_credentials(registry_credentials)
+    except Exception as exc:
+        raise CallbackFailed(f"Credential callback failed: {exc}") from exc
+
     with docker_v1_credential_manager(image=image, registry_credentials=docker_credentials, log_status=log_status):
         yield
 

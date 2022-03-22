@@ -4,6 +4,7 @@ import pytest
 import requests
 
 from laituri.docker.credential_manager import get_credential_manager
+from laituri.docker.credential_manager.errors import CallbackFailed
 from laituri_tests.mock_data import EXAMPLE_IMAGES
 from laituri_tests.mock_process import create_mock_popen
 from laituri_tests.test_docker_v1 import VALID_DOCKER_CREDENTIALS
@@ -45,3 +46,21 @@ def test_callback_retry(mocker, requests_mock, with_header: bool, image: str):
     headers = rh.request_history[-1].headers
     assert 'laituri/' in headers['user-agent']
     assert ('x-hello' in headers) == with_header
+
+
+def test_callback_error(mocker, requests_mock):
+    registry_credentials = VALID_CALLBACK_CREDENTIALS.copy()
+    rebbitron_error = {'error': 'failed to figbungle the rebbitron'}
+    requests_mock.post(
+        registry_credentials['url'],
+        status_code=401,
+        json=rebbitron_error,
+    )
+    mocker.patch('time.sleep')  # removes retry delays for testing
+    with pytest.raises(CallbackFailed) as ei:
+        with get_credential_manager(image='owner/projungle', registry_credentials=registry_credentials):
+            pass
+
+    exc = ei.value
+    # See that we can access the inner exception to get the error
+    assert isinstance(exc, CallbackFailed) and exc.get_callback_response().json() == rebbitron_error
