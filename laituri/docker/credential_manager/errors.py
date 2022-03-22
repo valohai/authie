@@ -2,18 +2,20 @@ from typing import Optional
 
 from requests import RequestException, Response
 
+from laituri.errors import LaituriError
 
-class DockerLoginFailed(Exception):
+
+class DockerLoginFailed(LaituriError):
     """We failed to login to Docker from some reason."""
 
     pass
 
 
-class InvalidDockerCommand(Exception):
+class InvalidDockerCommand(LaituriError):
     """The Docker command is misconfigured."""
 
 
-class CallbackFailed(Exception):
+class CallbackFailed(LaituriError):
     """
     Calling a registry credentials callback failed.
     """
