@@ -1,11 +1,12 @@
 import logging
+import shutil
 import subprocess
 from contextlib import contextmanager
 from typing import Callable, Dict
 
 from laituri import settings
 
-from .errors import DockerLoginFailed
+from .errors import DockerLoginFailed, InvalidDockerCommand
 
 log = logging.getLogger(__name__)
 
@@ -26,8 +27,17 @@ def docker_v1_credential_manager(
         )
     except DockerLoginFailed as dlf:
         raise DockerLoginFailed(f'Failed Docker login to {domain}: {str(dlf)}') from dlf
-    yield
-    docker_logout(domain)
+    try:
+        yield
+    finally:
+        docker_logout(domain)
+
+
+def get_docker_command() -> str:
+    cmd = shutil.which(settings.DOCKER_COMMAND)
+    if not cmd:
+        raise InvalidDockerCommand(f"Invalid Docker command: {cmd}")
+    return cmd
 
 
 def docker_login(domain: str, username: str, password: str) -> bool:
@@ -35,14 +45,13 @@ def docker_login(domain: str, username: str, password: str) -> bool:
     Use Docker command-line client to login to the specified image registry.
     """
     args = [
-        '/usr/bin/env',
-        settings.DOCKER_COMMAND,
+        get_docker_command(),
         'login',
         '--username', username,
         '--password-stdin',
         domain,
     ]
-    log.info(f"Running `{' '.join(args)}`")
+    log.debug(f"Running `{' '.join(args)}`")
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
         cmd_input = (password + '\n').encode('utf-8')
@@ -63,10 +72,9 @@ def docker_logout(domain: str) -> None:
         domain = 'https://index.docker.io/v1/'
 
     try:
-        log.info(f'Running `docker logout {domain}`')
+        log.debug(f'Running `docker logout {domain}`')
         subprocess.check_call([
-            '/usr/bin/env',
-            settings.DOCKER_COMMAND,
+            get_docker_command(),
             'logout',
             domain,
         ], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, timeout=settings.DOCKER_TIMEOUT)
