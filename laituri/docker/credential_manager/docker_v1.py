@@ -5,8 +5,7 @@ from contextlib import contextmanager
 from typing import Callable, Dict
 
 from laituri import settings
-
-from .errors import DockerLoginFailed, InvalidDockerCommand
+from laituri.docker.credential_manager.errors import DockerLoginFailed, InvalidDockerCommand
 
 log = logging.getLogger(__name__)
 

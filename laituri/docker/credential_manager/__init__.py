@@ -1,7 +1,7 @@
 from typing import Callable, Dict, Optional
 
-from .credential_managers import credential_managers
-from .dummy import get_dummy_credential_manager
+from laituri.docker.credential_manager.credential_managers import credential_managers
+from laituri.docker.credential_manager.dummy import get_dummy_credential_manager
 
 
 def _noop_log_status(message: str):

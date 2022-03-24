@@ -6,8 +6,7 @@ import requests
 from laituri.docker.credential_manager import get_credential_manager
 from laituri_tests.mock_data import EXAMPLE_IMAGES
 from laituri_tests.mock_process import create_mock_popen
-
-from .test_docker_v1 import VALID_DOCKER_CREDENTIALS
+from laituri_tests.test_docker_v1 import VALID_DOCKER_CREDENTIALS
 
 VALID_CALLBACK_CREDENTIALS: Dict[str, Any] = {
     'version': 1,
