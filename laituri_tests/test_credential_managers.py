@@ -4,6 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from laituri.docker.credential_manager import get_credential_manager
+from laituri.utils.images import get_image_domain
 from laituri_tests.mock_data import EXAMPLE_IMAGES
 from laituri_tests.mock_process import create_mock_popen
 from laituri_tests.test_docker_v1 import VALID_DOCKER_CREDENTIALS
@@ -29,6 +30,8 @@ def test_login_with_valid_credentials(mocker, requests_mock, image: str, credent
         requests_mock.post(VALID_CALLBACK_CREDENTIALS['url'], json=VALID_CALLBACK_RESPONSE)
     with get_credential_manager(image=image, registry_credentials=credentials):
         assert mock_popen.call_count == 1  # login
+        args = mock_popen.call_args[0][0]
+        assert args[-1] == get_image_domain(image)
         my_action()
     assert mock_popen.call_count == 2  # login + logout
     my_action.assert_called_once_with()

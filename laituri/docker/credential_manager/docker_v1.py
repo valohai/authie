@@ -6,6 +6,7 @@ from typing import Callable, Dict
 
 from laituri import settings
 from laituri.docker.credential_manager.errors import DockerLoginFailed, InvalidDockerCommand
+from laituri.utils.images import get_image_domain
 
 log = logging.getLogger(__name__)
 
@@ -17,7 +18,8 @@ def docker_v1_credential_manager(
     registry_credentials: Dict,
     log_status: Callable
 ):
-    domain = image.split('/')[0]
+    # If image looks like a dockerhub image, use docker.io as the registry domain
+    domain = get_image_domain(image)
     try:
         docker_login(
             domain=str(domain),
