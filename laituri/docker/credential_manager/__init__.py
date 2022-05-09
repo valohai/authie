@@ -1,19 +1,20 @@
-from typing import Callable, Dict, Optional
+from typing import Optional
 
 from laituri.docker.credential_manager.credential_managers import credential_managers
 from laituri.docker.credential_manager.dummy import get_dummy_credential_manager
+from laituri.types import CredentialManager, LogStatusCallable, RegistryCredentialsDict
 
 
-def _noop_log_status(message: str):
+def _noop_log_status(message: str) -> None:
     pass  # pragma: nocover
 
 
 def get_credential_manager(
     *,
     image: str,
-    registry_credentials: Optional[Dict] = None,
-    log_status: Callable = _noop_log_status
-):
+    registry_credentials: Optional[RegistryCredentialsDict] = None,
+    log_status: LogStatusCallable = _noop_log_status,
+) -> CredentialManager:
     """
     Get a credential context manager object based on the registry credentials dictionary passed in.
 

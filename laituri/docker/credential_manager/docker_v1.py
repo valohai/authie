@@ -2,10 +2,11 @@ import logging
 import shutil
 import subprocess
 from contextlib import contextmanager
-from typing import Callable, Dict
+from typing import Iterator
 
 from laituri import settings
 from laituri.docker.credential_manager.errors import DockerLoginFailed, InvalidDockerCommand
+from laituri.types import LogStatusCallable, RegistryCredentialsDict
 from laituri.utils.images import get_image_domain
 
 log = logging.getLogger(__name__)
@@ -15,9 +16,9 @@ log = logging.getLogger(__name__)
 def docker_v1_credential_manager(
     *,
     image: str,
-    registry_credentials: Dict,
-    log_status: Callable
-):
+    registry_credentials: RegistryCredentialsDict,
+    log_status: LogStatusCallable,
+) -> Iterator[None]:
     # If image looks like a dockerhub image, use docker.io as the registry domain
     domain = get_image_domain(image)
     try:

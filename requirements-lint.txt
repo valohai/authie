@@ -12,11 +12,11 @@ flake8==4.0.1
     #   flake8-bugbear
     #   flake8-isort
     #   flake8-tidy-imports
-flake8-bugbear==22.3.20
+flake8-bugbear==22.4.25
     # via -r requirements-lint.in
 flake8-isort==4.1.1
     # via -r requirements-lint.in
-flake8-tidy-imports==4.6.0
+flake8-tidy-imports==4.7.0
     # via -r requirements-lint.in
 isort==5.10.1
     # via
@@ -24,7 +24,7 @@ isort==5.10.1
     #   flake8-isort
 mccabe==0.6.1
     # via flake8
-mypy==0.941
+mypy==0.950
     # via -r requirements-lint.in
 mypy-extensions==0.4.3
     # via mypy
@@ -36,9 +36,9 @@ testfixtures==6.18.5
     # via flake8-isort
 tomli==2.0.1
     # via mypy
-types-requests==2.27.14
+types-requests==2.27.25
     # via -r requirements-lint.in
-types-urllib3==1.26.11
+types-urllib3==1.26.14
     # via types-requests
-typing-extensions==4.1.1
+typing-extensions==4.2.0
     # via mypy
