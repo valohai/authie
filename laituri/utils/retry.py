@@ -1,16 +1,19 @@
 import random
 import time
 from functools import wraps
+from typing import Any, Callable, TypeVar, cast
+
+T = TypeVar('T', bound=Callable[..., Any])
 
 
-def retry(*, tries: int = 5, max_delay: float = 32):
+def retry(*, tries: int = 5, max_delay: float = 32) -> Callable[[T], T]:
     """
     Decorator that retries the wrapped function if any exception occurs.
     """
 
-    def inner_retry(func):
+    def inner_retry(func: T) -> T:
         @wraps(func)
-        def wrapped_func(*args, **kwargs):
+        def wrapped_func(*args, **kwargs):  # type: ignore
             attempt = 1
             while attempt < tries:
                 try:
@@ -24,6 +27,6 @@ def retry(*, tries: int = 5, max_delay: float = 32):
             # and finally, just try one more time but let any exceptions bubble up
             return func(*args, **kwargs)
 
-        return wrapped_func
+        return cast(T, wrapped_func)
 
     return inner_retry
