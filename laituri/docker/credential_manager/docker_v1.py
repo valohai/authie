@@ -7,7 +7,7 @@ from typing import Iterator
 from laituri import settings
 from laituri.docker.credential_manager.errors import DockerLoginFailed, InvalidDockerCommand
 from laituri.types import LogStatusCallable, RegistryCredentialsDict
-from laituri.utils.images import get_image_domain
+from laituri.utils.images import get_image_hostname
 
 log = logging.getLogger(__name__)
 
@@ -20,19 +20,19 @@ def docker_v1_credential_manager(
     log_status: LogStatusCallable,
 ) -> Iterator[None]:
     # If image looks like a dockerhub image, use docker.io as the registry domain
-    domain = get_image_domain(image)
+    hostname = get_image_hostname(image)
     try:
         docker_login(
-            domain=str(domain),
+            domain=str(hostname),
             username=str(registry_credentials['username']),
             password=str(registry_credentials['password']),
         )
     except DockerLoginFailed as dlf:
-        raise DockerLoginFailed(f'Failed Docker login to {domain}: {str(dlf)}') from dlf
+        raise DockerLoginFailed(f'Failed Docker login to {hostname}: {str(dlf)}') from dlf
     try:
         yield
     finally:
-        docker_logout(domain)
+        docker_logout(hostname)
 
 
 def get_docker_command() -> str:
