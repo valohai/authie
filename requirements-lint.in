@@ -5,3 +5,4 @@ flake8-tidy-imports
 isort
 mypy
 types-requests
+boto3-stubs

@@ -11,6 +11,12 @@ class DockerLoginFailed(LaituriError):
     pass
 
 
+class ECRLoginFailed(LaituriError):
+    """We failed to login to ECR from some reason."""
+
+    pass
+
+
 class InvalidDockerCommand(LaituriError):
     """The Docker command is misconfigured."""
 
