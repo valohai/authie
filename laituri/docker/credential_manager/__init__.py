@@ -30,9 +30,9 @@ def get_credential_manager(
     if not isinstance(registry_credentials, dict):  # no credentials to manage
         return get_dummy_credential_manager()
 
-    credentials_type = registry_credentials.get('type')
     version = registry_credentials.get('version')
-    manager = credential_managers.get((str(credentials_type), str(version)))
+    credentials_type = str(registry_credentials.get('type'))
+    manager = credential_managers.get((credentials_type, str(version)))
     if manager:
         return manager(
             image=image,
@@ -40,5 +40,5 @@ def get_credential_manager(
             log_status=log_status,
         )
 
-    log_status(f'Unable to parse {type} version {version} registry credentials; upcoming action may fail.')
+    log_status(f'Unable to parse {credentials_type} version {version} registry credentials; upcoming action may fail.')
     return get_dummy_credential_manager()
