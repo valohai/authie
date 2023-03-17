@@ -1,11 +1,11 @@
-from typing import ByteString
+from typing import ByteString, Any, List
 from unittest.mock import Mock
 
 
-def create_mock_popen():
+def create_mock_popen() -> Mock:
     """Create a general mock Popen function that succeeds on all known subprocess calls."""
 
-    def popen_mock(args, **kwargs):
+    def popen_mock(args: List[str], **_kwargs: Any) -> Mock:
         # make all known call types automatically succeed
         if args[0].endswith('docker') and args[1] in ('login', 'logout'):
             return create_mock_process()
@@ -19,7 +19,7 @@ def create_mock_process(
     returncode: int = 0,
     stdout: ByteString = b'success',
     stderr: ByteString = b'',
-):
+) -> Mock:
     """
     Create a mock Popen process for later inspection.
 
