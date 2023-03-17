@@ -27,7 +27,7 @@ def registry_credentials_callback_v1_credential_manager(
         yield
 
 
-@retry()
+@retry(tries=10)
 def fetch_docker_credentials(request_info: Dict[str, Any]) -> RegistryCredentialsDict:
     headers = default_headers()  # type: ignore[no-untyped-call]
     headers['User-Agent'] = f'{headers.get("User-Agent")} laituri/{laituri.__version__}'
