@@ -1,4 +1,4 @@
-from typing import ByteString, Any, List
+from typing import Any, ByteString, List
 from unittest.mock import Mock
 
 

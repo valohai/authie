@@ -34,6 +34,4 @@ jobs:
         with:
           python-version: '3.10'
       - uses: actions/checkout@v3
-      - run: 'pip install -e . -r requirements-lint.txt'
-      - run: flake8
-      - run: mypy --strict laituri
+      - uses: pre-commit/action@v3.0.0

@@ -1,8 +1,0 @@
-flake8
-flake8-bugbear
-flake8-isort
-flake8-tidy-imports
-isort
-mypy
-types-requests
-boto3-stubs
