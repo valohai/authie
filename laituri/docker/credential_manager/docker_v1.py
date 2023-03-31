@@ -18,6 +18,7 @@ def docker_v1_credential_manager(
     image: str,
     registry_credentials: RegistryCredentialsDict,
     log_status: LogStatusCallable,
+    auth_tries: int,
 ) -> Iterator[None]:
     # If image looks like a dockerhub image, use docker.io as the registry domain
     hostname = get_image_hostname(image)

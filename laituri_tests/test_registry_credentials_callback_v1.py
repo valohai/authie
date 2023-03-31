@@ -64,3 +64,22 @@ def test_callback_error(mocker, requests_mock):
     exc = ei.value
     # See that we can access the inner exception to get the error
     assert isinstance(exc, CallbackFailed) and exc.get_callback_response().json() == rebbitron_error
+
+
+@pytest.mark.parametrize('auth_tries', (1, 32))
+def test_custom_auth_tries(mocker, requests_mock, auth_tries):
+    registry_credentials = VALID_CALLBACK_CREDENTIALS.copy()
+    responses = requests_mock.post(registry_credentials['url'], status_code=500)
+    mocker.patch('time.sleep')  # removes retry delays for testing
+    my_action = mocker.Mock()
+
+    with pytest.raises(CallbackFailed, match='500 Server Error'):
+        with get_credential_manager(
+            image='owner/boggers',
+            registry_credentials=registry_credentials,
+            auth_tries=auth_tries,
+        ):
+            my_action()
+
+    assert my_action.call_count == 0
+    assert responses.call_count == auth_tries

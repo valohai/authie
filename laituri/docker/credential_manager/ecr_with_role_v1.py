@@ -13,6 +13,7 @@ def ecr_with_role_v1_credential_manager(
     image: str,
     registry_credentials: RegistryCredentialsDict,
     log_status: LogStatusCallable,
+    auth_tries: int,
 ) -> Iterator[None]:
     from boto3 import Session
     role_name = registry_credentials['role_name']
@@ -35,7 +36,12 @@ def ecr_with_role_v1_credential_manager(
     except Exception as exc:
         raise ECRLoginFailed(f"Role based docker credentials fetch failed: {exc}") from exc
 
-    with docker_v1_credential_manager(image=image, registry_credentials=docker_credentials, log_status=log_status):
+    with docker_v1_credential_manager(
+        image=image,
+        registry_credentials=docker_credentials,
+        log_status=log_status,
+        auth_tries=auth_tries,
+    ):
         yield
 
 

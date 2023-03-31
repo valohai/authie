@@ -17,14 +17,20 @@ def registry_credentials_callback_v1_credential_manager(
     image: str,
     registry_credentials: RegistryCredentialsDict,
     log_status: LogStatusCallable,
+    auth_tries: int,
 ) -> Iterator[None]:
-    retrying_fetch_docker_credentials = make_retrying(fetch_docker_credentials, tries=10)
+    retrying_fetch_docker_credentials = make_retrying(fetch_docker_credentials, tries=auth_tries)
     try:
         docker_credentials = retrying_fetch_docker_credentials(registry_credentials)
     except Exception as exc:
         raise CallbackFailed(f"Credential callback failed: {exc}") from exc
 
-    with docker_v1_credential_manager(image=image, registry_credentials=docker_credentials, log_status=log_status):
+    with docker_v1_credential_manager(
+        image=image,
+        registry_credentials=docker_credentials,
+        log_status=log_status,
+        auth_tries=auth_tries,
+    ):
         yield
 
 
