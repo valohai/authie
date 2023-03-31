@@ -14,6 +14,7 @@ def get_credential_manager(
     image: str,
     registry_credentials: Optional[RegistryCredentialsDict] = None,
     log_status: LogStatusCallable = _noop_log_status,
+    auth_tries: int = 5,
 ) -> CredentialManager:
     """
     Get a credential context manager object based on the registry credentials dictionary passed in.
@@ -24,6 +25,7 @@ def get_credential_manager(
     :param image: full Docker image name, including the registry domain and tag if applicable
     :param registry_credentials: optional {type, version, username, password} dict for registry login
     :param log_status: optional function to use for user-facing status logging
+    :param auth_tries: number of times to try authentication in case it fails
     :raises DockerLoginFailed
     :return: ContextManager
     """
@@ -38,6 +40,7 @@ def get_credential_manager(
             image=image,
             registry_credentials=registry_credentials,
             log_status=log_status,
+            auth_tries=auth_tries,
         )
 
     log_status(f'Unable to parse {credentials_type} version {version} registry credentials; upcoming action may fail.')

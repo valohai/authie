@@ -12,22 +12,28 @@ def retry(*, tries: int = 5, max_delay: float = 32) -> Callable[[T], T]:
     """
 
     def inner_retry(func: T) -> T:
-
-        @wraps(func)
-        def wrapped_func(*args, **kwargs):  # type: ignore
-            attempt = 1
-            while attempt <= tries:
-                try:
-                    return func(*args, **kwargs)
-                except Exception:
-                    delay = (2 ** (attempt - 1))  # 1, 2, 4, 8, 16, 32...
-                    delay += random.random()  # a tiny bit of random for desynchronizing multiple potential users
-                    delay = min(delay, max_delay)
-                    time.sleep(delay)
-                    attempt += 1
-            # and finally, just try one more time but let any exceptions bubble up
-            return func(*args, **kwargs)
-
-        return cast(T, wrapped_func)
+        return make_retrying(func, tries=tries, max_delay=max_delay)
 
     return inner_retry
+
+
+def make_retrying(func: T, tries: int = 5, max_delay: float = 32) -> T:
+    if tries < 1:
+        raise ValueError(f'tries must be >= 1, got {tries}')
+
+    @wraps(func)
+    def wrapped_func(*args, **kwargs):  # type: ignore
+        attempt = 1
+        while attempt < tries:
+            try:
+                return func(*args, **kwargs)
+            except Exception:
+                delay = (2 ** (attempt - 1))  # 1, 2, 4, 8, 16, 32...
+                delay += random.random()  # a tiny bit of random for desynchronizing multiple potential users
+                delay = min(delay, max_delay)
+                time.sleep(delay)
+                attempt += 1
+        # and finally, just try one more time but let any exceptions bubble up
+        return func(*args, **kwargs)
+
+    return cast(T, wrapped_func)

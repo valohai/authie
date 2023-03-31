@@ -10,6 +10,7 @@ def dummy_credential_manager(
     image: str,
     registry_credentials: RegistryCredentialsDict,
     log_status: LogStatusCallable,
+    auth_tries: int,
 ) -> Iterator[None]:
     """
     Credential context manager that does nothing.
@@ -23,4 +24,9 @@ def get_dummy_credential_manager() -> ContextManager[None]:
     """
     Construct a dummy credential manager without having to think about arguments.
     """
-    return dummy_credential_manager(image="", registry_credentials={}, log_status=lambda s: None)
+    return dummy_credential_manager(
+        image="",
+        registry_credentials={},
+        log_status=lambda s: None,
+        auth_tries=1,
+    )
