@@ -62,3 +62,9 @@ class TestRetry:
         with pytest.raises(Exception, match='oof!'):
             my_retrying_action()
         assert my_action.call_count == 3
+
+    @pytest.mark.parametrize('tries', (0, -1))
+    def test_invalid_tries(self, mocker, tries):
+        my_action = mocker.Mock()
+        with pytest.raises(ValueError, match='tries must be >= 1'):
+            make_retrying(my_action, tries=tries)

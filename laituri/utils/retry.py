@@ -18,6 +18,9 @@ def retry(*, tries: int = 5, max_delay: float = 32) -> Callable[[T], T]:
 
 
 def make_retrying(func: T, tries: int = 5, max_delay: float = 32) -> T:
+    if tries < 1:
+        raise ValueError(f'tries must be >= 1, got {tries}')
+
     @wraps(func)
     def wrapped_func(*args, **kwargs):  # type: ignore
         attempt = 1
