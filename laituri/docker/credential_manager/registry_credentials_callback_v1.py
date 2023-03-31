@@ -8,7 +8,7 @@ import laituri
 from laituri.docker.credential_manager.docker_v1 import docker_v1_credential_manager
 from laituri.docker.credential_manager.errors import CallbackFailed
 from laituri.types import LogStatusCallable, RegistryCredentialsDict
-from laituri.utils.retry import retry
+from laituri.utils.retry import make_retrying
 
 
 @contextmanager
@@ -18,8 +18,9 @@ def registry_credentials_callback_v1_credential_manager(
     registry_credentials: RegistryCredentialsDict,
     log_status: LogStatusCallable,
 ) -> Iterator[None]:
+    retrying_fetch_docker_credentials = make_retrying(fetch_docker_credentials, tries=10)
     try:
-        docker_credentials = fetch_docker_credentials(registry_credentials)
+        docker_credentials = retrying_fetch_docker_credentials(registry_credentials)
     except Exception as exc:
         raise CallbackFailed(f"Credential callback failed: {exc}") from exc
 
@@ -27,7 +28,6 @@ def registry_credentials_callback_v1_credential_manager(
         yield
 
 
-@retry(tries=10)
 def fetch_docker_credentials(request_info: Dict[str, Any]) -> RegistryCredentialsDict:
     headers = default_headers()
     headers['User-Agent'] = f'{headers.get("User-Agent")} laituri/{laituri.__version__}'
