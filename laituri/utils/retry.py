@@ -16,7 +16,7 @@ def retry(*, tries: int = 5, max_delay: float = 32) -> Callable[[T], T]:
         @wraps(func)
         def wrapped_func(*args, **kwargs):  # type: ignore
             attempt = 1
-            while attempt <= tries:
+            while attempt < tries:
                 try:
                     return func(*args, **kwargs)
                 except Exception:
