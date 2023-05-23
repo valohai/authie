@@ -2,4 +2,4 @@ pytest
 pytest-cov
 pytest-mock
 requests-mock
-requests<2.26.0
+requests<2.32.0
