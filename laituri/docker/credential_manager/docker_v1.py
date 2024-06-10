@@ -58,7 +58,7 @@ def docker_login(domain: str, username: str, password: str) -> bool:
     log.debug(f"Running `{' '.join(args)}`")
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        cmd_input = (password + '\n').encode('utf-8')
+        cmd_input = f"{password}\n".encode()
         stdout, _ = proc.communicate(input=cmd_input, timeout=settings.DOCKER_TIMEOUT)
     except subprocess.TimeoutExpired as te:
         raise DockerLoginFailed('timed out') from te

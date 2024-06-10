@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/valohai/laituri/branch/master/graph/badge.svg)](https://codecov.io/gh/valohai/laituri)
 
 `laituri` is a set of Docker-related Python snippets used at [Valohai](https://valohai.com/).
-You can use it with Python >= 3.7.
+You can use it with Python >= 3.8.
 
 ## Usage
 

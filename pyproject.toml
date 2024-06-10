@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "Docker Toolkit for Python"
 readme = "README.md"
 license = "MIT"
-requires-python = ">=3.6"
+requires-python = ">=3.8"
 authors = [
     { name = "Valohai", email = "hait@valohai.com" },
 ]
@@ -45,7 +45,7 @@ strict = true
 exclude = "laituri_tests/test_.*"
 
 [tool.ruff]
-target-version = "py37"
+target-version = "py38"
 line-length = 120
 
 [tool.ruff.lint]
@@ -59,6 +59,7 @@ select = [
     "I", # isort
     "T", # debugger and print
     "TID", # flake8-tidy-imports
+    "UP", # pyupgrade
     "W", # pycodestyle
 ]
 ignore = []
