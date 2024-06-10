@@ -33,8 +33,8 @@ def test_callback_retry(mocker, requests_mock, with_header: bool, image: str):
             {'status_code': 500},
             {'exc': requests.exceptions.ConnectTimeout},
             {'status_code': 200},  # no JSON
-            {'status_code': 200, 'json': VALID_CALLBACK_RESPONSE}
-        ]
+            {'status_code': 200, 'json': VALID_CALLBACK_RESPONSE},
+        ],
     )
     mock_popen = mocker.patch('subprocess.Popen', new_callable=create_mock_popen)
     mocker.patch('time.sleep')  # removes retry delays for testing

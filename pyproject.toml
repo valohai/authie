@@ -1,17 +1,54 @@
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "laituri"
+dynamic = ["version"]
+description = "Docker Toolkit for Python"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [
+    { name = "Valohai", email = "hait@valohai.com" },
 ]
-build-backend = "setuptools.build_meta"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "requests>=2.23,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "requests-mock",
+]
+
+[project.urls]
+Homepage = "https://github.com/valohai/laituri"
+
+[tool.hatch.version]
+path = "laituri/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/laituri",
+]
 
 [tool.mypy]
 strict = true
 exclude = "laituri_tests/test_.*"
 
 [tool.ruff]
-target-version = "py37"
+target-version = "py38"
 line-length = 120
+
+[tool.ruff.lint]
 mccabe.max-complexity = 10
 flake8-tidy-imports.ban-relative-imports = "all"
 select = [
@@ -22,6 +59,10 @@ select = [
     "I", # isort
     "T", # debugger and print
     "TID", # flake8-tidy-imports
+    "UP", # pyupgrade
     "W", # pycodestyle
 ]
 ignore = []
+
+[tool.ruff.format]
+quote-style = "preserve"

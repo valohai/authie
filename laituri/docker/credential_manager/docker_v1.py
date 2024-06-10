@@ -50,14 +50,15 @@ def docker_login(domain: str, username: str, password: str) -> bool:
     args = [
         get_docker_command(),
         'login',
-        '--username', username,
+        '--username',
+        username,
         '--password-stdin',
         domain,
     ]
     log.debug(f"Running `{' '.join(args)}`")
     proc = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     try:
-        cmd_input = (password + '\n').encode('utf-8')
+        cmd_input = f"{password}\n".encode()
         stdout, _ = proc.communicate(input=cmd_input, timeout=settings.DOCKER_TIMEOUT)
     except subprocess.TimeoutExpired as te:
         raise DockerLoginFailed('timed out') from te
@@ -76,11 +77,16 @@ def docker_logout(domain: str) -> None:
 
     try:
         log.debug(f'Running `docker logout {domain}`')
-        subprocess.check_call([
-            get_docker_command(),
-            'logout',
-            domain,
-        ], stderr=subprocess.STDOUT, stdout=subprocess.PIPE, timeout=settings.DOCKER_TIMEOUT)
+        subprocess.check_call(
+            [
+                get_docker_command(),
+                'logout',
+                domain,
+            ],
+            stderr=subprocess.STDOUT,
+            stdout=subprocess.PIPE,
+            timeout=settings.DOCKER_TIMEOUT,
+        )
     except subprocess.CalledProcessError as cpe:
         message = cpe.stdout.decode('utf-8', errors='ignore')
         log.warning(f'Failed `docker logout {domain}`: {message}')

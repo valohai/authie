@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/valohai/laituri/branch/master/graph/badge.svg)](https://codecov.io/gh/valohai/laituri)
 
 `laituri` is a set of Docker-related Python snippets used at [Valohai](https://valohai.com/).
-You can use it with Python >= 3.7.
+You can use it with Python >= 3.8.
 
 ## Usage
 
@@ -47,7 +47,7 @@ Installing editable library version in the current virtual environment.
 
 ```bash
 # install this package and all development dependencies
-pip install -e . -r requirements-dev.txt pip-tools pre-commit && pre-commit install
+pip install -e .[dev] pre-commit && pre-commit install
 
 # manually run lint and type checks
 pre-commit run --all-files
