@@ -39,6 +39,8 @@ exclude = "laituri_tests/test_.*"
 [tool.ruff]
 target-version = "py37"
 line-length = 120
+
+[tool.ruff.lint]
 mccabe.max-complexity = 10
 flake8-tidy-imports.ban-relative-imports = "all"
 select = [
@@ -52,3 +54,6 @@ select = [
     "W", # pycodestyle
 ]
 ignore = []
+
+[tool.ruff.format]
+quote-style = "preserve"

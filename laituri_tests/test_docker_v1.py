@@ -12,7 +12,7 @@ VALID_DOCKER_CREDENTIALS = {
     'type': 'docker',
     'version': '1',
     'username': 'edward',
-    'password': 'scissors123'
+    'password': 'scissors123',
 }
 
 
@@ -83,7 +83,7 @@ def test_fallback_with_invalid_credential_configuration(mocker, missing_value):
     with get_credential_manager(
         image=image,
         registry_credentials=VALID_DOCKER_CREDENTIALS,
-        log_status=my_logging_callback
+        log_status=my_logging_callback,
     ):
         my_action()
 

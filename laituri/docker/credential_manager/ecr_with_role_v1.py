@@ -16,6 +16,7 @@ def ecr_with_role_v1_credential_manager(
     auth_tries: int,
 ) -> Iterator[None]:
     from boto3 import Session
+
     role_name = registry_credentials['role_name']
     creds = get_role_credentials_from_instance_metadata(role_name)
     try:
@@ -47,6 +48,7 @@ def ecr_with_role_v1_credential_manager(
 
 def get_role_credentials_from_instance_metadata(role_name: str) -> Dict[str, str]:
     from botocore.utils import InstanceMetadataFetcher
+
     fetcher = InstanceMetadataFetcher()
     creds: Dict[str, str] = fetcher.retrieve_iam_role_credentials()
     if creds.get('role_name') != role_name:

@@ -4,7 +4,6 @@ from laituri.utils.retry import make_retrying, retry
 
 
 class TestRetry:
-
     @pytest.fixture(autouse=True)
     def disable_sleep(self, mocker):
         return mocker.patch('time.sleep')  # removes retry delays for testing

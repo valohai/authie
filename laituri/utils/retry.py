@@ -28,7 +28,7 @@ def make_retrying(func: T, tries: int = 5, max_delay: float = 32) -> T:
             try:
                 return func(*args, **kwargs)
             except Exception:
-                delay = (2 ** (attempt - 1))  # 1, 2, 4, 8, 16, 32...
+                delay = 2 ** (attempt - 1)  # 1, 2, 4, 8, 16, 32...
                 delay += random.random()  # a tiny bit of random for desynchronizing multiple potential users
                 delay = min(delay, max_delay)
                 time.sleep(delay)
