@@ -1,5 +1,0 @@
-pytest
-pytest-cov
-pytest-mock
-requests-mock
-requests<2.26.0

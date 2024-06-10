@@ -21,6 +21,14 @@ dependencies = [
     "requests>=2.23,<3",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pytest-cov",
+    "pytest-mock",
+    "requests-mock",
+]
+
 [project.urls]
 Homepage = "https://github.com/valohai/laituri"
 

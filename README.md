@@ -47,7 +47,7 @@ Installing editable library version in the current virtual environment.
 
 ```bash
 # install this package and all development dependencies
-pip install -e . -r requirements-dev.txt pip-tools pre-commit && pre-commit install
+pip install -e .[dev] pre-commit && pre-commit install
 
 # manually run lint and type checks
 pre-commit run --all-files
